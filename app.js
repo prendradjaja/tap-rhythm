@@ -76,6 +76,11 @@ var state = {
 };
 
 function main() {
-  drawRect('red', 10, 10, 10, 10);
+  // drawRect('red', 10, 10, 10, 10);
   console.log('hi');
+  drawScore();
+
+  drawNote(1, 1, 1);
+  drawNote(2, 2, 2);
+  drawNote(2, 3.5, 3);
 }
