@@ -22,7 +22,11 @@ var PITCH_RANGE = 3;
 var PITCH_GAP = SCORE_HEIGHT / (PITCH_RANGE + 1);
 
 function drawCursor() {
-  return drawRect('blue', LEFT_MARGIN, TOP_MARGIN, BEAT_WIDTH, SCORE_HEIGHT);
+  var left = LEFT_MARGIN;
+  return {
+    cursor: drawRect('blue', left, TOP_MARGIN, BEAT_WIDTH, SCORE_HEIGHT),
+    left: left
+  };
 }
 
 function moveCursor(cursor, left) {
@@ -55,18 +59,22 @@ function drawScore() {
 function drawNote(measure, beat, pitch, color) {
   color = color || 'green';
 
-  // an rBeat is a "rendering beat", which is 0-indexed and analogous to an
-  // improper fraction. e.g. in 4/4 time:
+  // an zBeat is a "zero-indexed beat", which is (duh) 0-indexed but also
+  // analogous to an improper fraction. e.g. in 4/4 time:
   // - the first beat  of the second measure is 4
   // - the second beat of the second measure is 5
-  var rBeat = (measure - 1) * BEATS_PER_MEASURE + beat - 1;
+  var zBeat = (measure - 1) * BEATS_PER_MEASURE + beat - 1;
 
   var xOffset = (NOTE_WIDTH - 1) / 2;
   var yOffset = (NOTE_HEIGHT - 1) / 2;
 
   drawRect(color,
-           LEFT_MARGIN + BEAT_GAP * rBeat - xOffset,
+           LEFT_MARGIN + BEAT_GAP * zBeat - xOffset,
            TOP_MARGIN + SCORE_HEIGHT - pitch * PITCH_GAP - yOffset,
            NOTE_WIDTH,
            NOTE_HEIGHT);
+}
+
+function drawZNote(zBeat, pitch, color) {
+  drawNote(1, zBeat + 1, pitch, color);
 }

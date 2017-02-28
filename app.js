@@ -1,3 +1,7 @@
+BEATS_PER_MINUTE = 110;
+
+
+
 // TODO state machine probably appropriate
 
 function ensureStarted(message) {
@@ -17,6 +21,8 @@ function ensureStopped(message) {
 function record() {
   ensureStopped('Already recording');
 
+  animateCursor();
+
   console.log('Recording');
   state.recording = true;
   state.recordStart = getTime();
@@ -31,6 +37,7 @@ function stop() {
 }
 
 function play() {
+  animateCursor();
   state.notes.forEach(note => {
     setTimeout(() => playNote(note.num),
                note.time);
@@ -43,6 +50,9 @@ function note(num) {
     ensureStarted();
 
     var noteTime = getTime() - state.recordStart;
+    var zBeat = toBeats(noteTime);
+    drawZNote(zBeat, num);
+
     state.notes.push({
       time: noteTime,
       num: num
@@ -76,11 +86,11 @@ var state = {
 };
 
 function main() {
-  // drawRect('red', 10, 10, 10, 10);
   console.log('hi');
   drawScore();
 
-  drawNote(1, 1, 1);
-  drawNote(2, 2, 2);
-  drawNote(2, 3.5, 3);
+  // drawNote(1, 1, 1);
+  // drawNote(2, 2, 2);
+  // drawNote(2, 3.5, 3);
+  // animateCursor();
 }
