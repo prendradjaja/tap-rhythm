@@ -1,7 +1,8 @@
 // === AUDIO ======================================
 
-function playNote() {
-  var audio = new Audio('piano.mp3');
+// num = 1 | 2 | 3
+function playNote(num) {
+  var audio = new Audio('sounds/' + num + '.mp3');
   audio.play();
 }
 
@@ -75,23 +76,36 @@ function stop() {
 }
 
 function play() {
-  state.notes.forEach(delay => setTimeout(playNote, delay));
+  state.notes.forEach(note => {
+    setTimeout(() => playNote(note.num),
+               note.time);
+  });
 }
 
-function note() {
-  ensureStarted();
+// TODO is this currying good or bad?
+function note(num) {
+  return function() {
+    ensureStarted();
 
-  var noteTime = getTime() - state.recordStart;
-  state.notes.push(noteTime);
+    var noteTime = getTime() - state.recordStart;
+    state.notes.push({
+      time: noteTime,
+      num: num
+    });
+  }
 }
 
 function tap(event) {
   var commands = {
-    82: record,  // r
-    83: stop,    // s
-    80: play,    // p
-    76: play,    // l (alias for p)
-    84: note,    // t
+    79: play,     // o
+    69: record,   // e
+    85: stop,     // u
+    55: play,     // 7
+    56: record,   // 8
+    57: stop,     // 9
+    72: note(1),  // h
+    84: note(2),  // t
+    78: note(3),  // n
   };
 
   if (event.keyCode in commands) {
