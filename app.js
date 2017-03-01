@@ -21,7 +21,7 @@ function ensureStopped(message) {
 function record() {
   ensureStopped('Already recording');
 
-  animateCursor();
+  animateCursor(state.staffRaw);
 
   console.log('Recording');
   state.recording = true;
@@ -37,7 +37,7 @@ function stop() {
 }
 
 function play() {
-  animateCursor();
+  animateCursor(state.staffRaw);
   state.notes.forEach(note => {
     setTimeout(() => playNote(note.num),
                note.time);
@@ -51,7 +51,8 @@ function note(num) {
 
     var noteTime = getTime() - state.recordStart;
     var zBeat = toBeats(noteTime);
-    drawZNote(zBeat, num);
+    state.staffRaw.drawZNote(zBeat, num);
+    state.staffRounded.drawZNote(roundTo(zBeat, 1/3), num);
 
     state.notes.push({
       time: noteTime,
@@ -83,11 +84,17 @@ var state = {
   recordStart: null,  // in milliseconds
   notes: [],          // list of millisecond delays e.g. [1000, 2000, 3000]
                       // for three notes 1sec apart each
+  staffRaw: null,
+  staffRounded: null,
 };
 
 function main() {
   console.log('hi');
-  drawStaff();
+
+  var spacing = STAFF_GAP + STAFF_HEIGHT;
+
+  state.staffRaw = new Staff(LEFT_MARGIN, TOP_MARGIN);
+  state.staffRounded = new Staff(LEFT_MARGIN, TOP_MARGIN + spacing);
 
   // drawNote(1, 1, 1);
   // drawNote(2, 2, 2);
