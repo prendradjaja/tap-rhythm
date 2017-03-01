@@ -5,7 +5,7 @@ var BEAT_GAP = 60;
 
 var LEFT_MARGIN = 20;
 var TOP_MARGIN = 20;
-var SCORE_HEIGHT = 80;
+var STAFF_HEIGHT = 80;
 var BEAT_WIDTH = 1;  // stuff is hard-coded to this value, can't really change it
 
 var BEAT_COLOR = '#ddd';
@@ -19,12 +19,12 @@ var PITCH_RANGE = 3;
 
 ////////////////////////////////// not configurable
 
-var PITCH_GAP = SCORE_HEIGHT / (PITCH_RANGE + 1);
+var PITCH_GAP = STAFF_HEIGHT / (PITCH_RANGE + 1);
 
 function drawCursor() {
   var left = LEFT_MARGIN;
   return {
-    cursor: drawRect('blue', left, TOP_MARGIN, BEAT_WIDTH, SCORE_HEIGHT),
+    cursor: drawRect('blue', left, TOP_MARGIN, BEAT_WIDTH, STAFF_HEIGHT),
     left: left
   };
 }
@@ -33,7 +33,7 @@ function moveCursor(cursor, left) {
   cursor.style.left = left;
 }
 
-function drawScore() {
+function drawStaff() {
   var color;
   var left = 0;
   for (var m = 0; m < NUM_MEASURES; m++) {
@@ -47,11 +47,11 @@ function drawScore() {
                LEFT_MARGIN + left,
                TOP_MARGIN,
                BEAT_WIDTH,
-               SCORE_HEIGHT);
+               STAFF_HEIGHT);
       left += BEAT_GAP;
     }
   }
-  drawRect(MEASURE_COLOR, LEFT_MARGIN + left, TOP_MARGIN, BEAT_WIDTH, SCORE_HEIGHT);
+  drawRect(MEASURE_COLOR, LEFT_MARGIN + left, TOP_MARGIN, BEAT_WIDTH, STAFF_HEIGHT);
 }
 
 // measure and beat are both 1-indexed
@@ -70,7 +70,7 @@ function drawNote(measure, beat, pitch, color) {
 
   drawRect(color,
            LEFT_MARGIN + BEAT_GAP * zBeat - xOffset,
-           TOP_MARGIN + SCORE_HEIGHT - pitch * PITCH_GAP - yOffset,
+           TOP_MARGIN + STAFF_HEIGHT - pitch * PITCH_GAP - yOffset,
            NOTE_WIDTH,
            NOTE_HEIGHT);
 }

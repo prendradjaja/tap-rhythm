@@ -87,7 +87,7 @@ var state = {
 
 function main() {
   console.log('hi');
-  drawScore();
+  drawStaff();
 
   // drawNote(1, 1, 1);
   // drawNote(2, 2, 2);
